@@ -129,7 +129,7 @@
 }
 
 .gs-main-page {
-  @apply bg-[#0D0F1A] h-full p-6 space-y-8
+  @apply bg-[#0D0F1A] h-full p-6 space-y-8 w-full
 }
 
 .gs-primary-bg {
