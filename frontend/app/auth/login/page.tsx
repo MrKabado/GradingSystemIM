@@ -169,7 +169,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-1 w-full rounded-2xl py-2.5 text-sm font-semibold text-white transition-all duration-150 active:scale-[0.98] disabled:opacity-70 bg-[#6366F1]"
+                className="mt-1 w-full rounded-2xl py-2.5 text-sm font-semibold text-white transition-all duration-150 active:scale-[0.98] disabled:opacity-70 bg-[#6366F1] cursor-pointer"
                 style={{
                   boxShadow: loading ? "none" : "0 4px 20px rgba(99,102,241,0.35)",
                 }}
@@ -210,7 +210,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => { setResetSent(false); setView("forgot"); }}
-                className="font-medium transition-colors hover:text-white"
+                className="font-medium transition-colors hover:text-white cursor-pointer"
                 style={{ color: "#818cf8" }}
               >
                 Reset
