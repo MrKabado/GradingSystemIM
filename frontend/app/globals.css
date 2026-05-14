@@ -127,3 +127,78 @@
     @apply font-sans;
     }
 }
+
+.gs-main-page {
+  @apply bg-[#0D0F1A] h-full p-6 space-y-8
+}
+
+.gs-primary-bg {
+  @apply bg-[#0D0F1A]
+}
+
+.gs-secondary-bg {
+  @apply bg-[#13162A]
+}
+
+.gs-tertiary-bg {
+  @apply bg-[#22273D]
+}
+
+.gs-card {
+  @apply bg-[#13162A] border border-[#545878]
+}
+
+.gs-primary-text {
+  @apply text-gray-300
+}
+
+.gs-secondary-text {
+  @apply text-[#545878]
+}
+
+.gs-sidebar-hover-active {
+  @apply hover:text-[#8B84FF] hover:bg-[#2C2D5D] border border-transparent hover:border hover:border-[#8B84FF] rounded-lg
+}
+
+.gs-sidebar-active {
+  @apply text-[#8B84FF] bg-[#2C2D5D] border border-[#8B84FF] rounded-lg
+}
+
+.gs-success-text {
+  @apply text-[#22C55E]
+}
+
+.gs-success-bg {
+  @apply bg-[#152B30]
+}
+
+.gs-failed-text {
+  @apply text-[#EF4444]
+}
+
+.gs-failed-bg {
+  @apply bg-[#3B2437]
+}
+
+.gs-primary-btn {
+  @apply bg-[#6366F1] text-white px-6 py-3 rounded-lg font-semibold
+}
+
+.gs-secondary-btn {
+    @apply px-6 py-3 rounded-xl
+    border border-[#252d40]
+    bg-[#1c2235]
+    text-white font-semibold;
+}
+
+.gs-primary-border-color {
+  @apply border-[#545878];
+}
+
+.gs-icon-blue {
+  @apply text-[#6C63FF]
+}
+
+.gs-blue-bg {
+  @apply bg-[#6C63FF]
+}
