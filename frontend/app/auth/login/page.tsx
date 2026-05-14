@@ -45,7 +45,7 @@ export default function LoginPage() {
     <div className="min-h-screen w-full flex items-center justify-center relative overflow-hidden bg-linear-to-b from-[#0d0f1a] to-[#13162A]">
       {/* Login / Sign Up card */}
       <div
-        className="relative z-10 w-full max-w-xs mx-4 rounded-2xl px-8 py-5 mt-15"
+        className="relative z-10 w-full max-w-xs mx-4 rounded-2xl px-8 py-5 "
         style={{
           background: "#13162A",
           boxShadow:
@@ -83,7 +83,7 @@ export default function LoginPage() {
                 key={tab}
                 type="button"
                 onClick={() => setView(tab)}
-                className="flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all duration-200"
+                className="flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer"
                 style={
                   view === tab
                     ? {
@@ -313,7 +313,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="mt-1 w-full rounded-2xl py-2.5 text-sm font-semibold text-white transition-all duration-150 active:scale-[0.98] disabled:opacity-70 bg-[#6366F1]"
+                className="cursor-pointer mt-1 w-full rounded-2xl py-2.5 text-sm font-semibold text-white transition-all duration-150 active:scale-[0.98] disabled:opacity-70 bg-[#6366F1]"
                 style={{
                   boxShadow: loading ? "none" : "0 4px 20px rgba(99,102,241,0.35)",
                 }}
