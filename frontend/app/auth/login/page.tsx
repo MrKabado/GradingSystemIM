@@ -3,20 +3,29 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<string[]>([]);
+  const router = useRouter();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/login", { email, password });
-      if (res.status === 200) {
-        toast.success("Logged in successfully!");
-        window.location.href = "/admin/dashboard";
+      console.log(process.env.NEXT_PUBLIC_BACKEND_API);
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/login`, { email, password });
+      
+      if (!res) {
+        toast.error("Error something went wrong");
+        return;
       }
+
+      toast.success(res.data.message);
+      setTimeout(() => {
+        router.push('/pages/dashboard')
+      }, 2000);
         
     } catch (err) {
       toast.error("An error occurred while logging in.");
@@ -69,7 +78,7 @@ export default function LoginPage() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-[#22273D] px-4 py-2 rounded-lg placeholder-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#545878]"
+              className="gs-primary-text bg-[#22273D] px-4 py-2 rounded-lg placeholder-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#545878]"
             />
           </div>
 
@@ -82,7 +91,7 @@ export default function LoginPage() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-[#22273D] px-4 py-2 rounded-lg placeholder-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#545878]"
+              className="gs-primary-text bg-[#22273D] px-4 py-2 rounded-lg placeholder-[#6B7280] focus:outline-none focus:ring-1 focus:ring-[#545878]"
             />
           </div>
 
