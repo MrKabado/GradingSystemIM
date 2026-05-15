@@ -10,9 +10,20 @@ import {
   ChartNoAxesColumn,
   NotepadText,
   PanelRightOpen,
-  PanelRightClose,
 } from "lucide-react"
 import { useState } from "react"
+
+const navItems = [
+  { label: "Overview", href: "/dashboard", icon: Box },
+  { label: "Students", href: "/students", icon: CircleUserRound },
+  { label: "Sections", href: "/sections", icon: UsersRound },
+  { label: "Subjects", href: "/subjects", icon: BookCopy },
+  { label: "Grades", href: "/grades", icon: ChartNoAxesColumn },
+]
+
+const reportItems = [
+  { label: "Grade Reports", href: "/grade-reports", icon: NotepadText },
+]
 
 export default function Sidebar() {
   const pathname = usePathname()
@@ -38,9 +49,10 @@ export default function Sidebar() {
                     GRADESYNC
                   </h1>
                 </div>
+
                 <PanelRightOpen
                   className="gs-secondary-text cursor-pointer"
-                  onClick={() => setPanelOpen(!panelOpen)}
+                  onClick={() => setPanelOpen(false)}
                 />
               </div>
 
@@ -56,75 +68,25 @@ export default function Sidebar() {
                 <h1 className="gs-secondary-text mb-2 ml-4 text-xs">MAIN</h1>
 
                 <ul>
-                  <li>
-                    <a
-                      href="/dashboard"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/pages/dashboard")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <Box className="h-6 w-6" />
-                      Overview
-                    </a>
-                  </li>
+                  {navItems.map((item) => {
+                    const Icon = item.icon
 
-                  <li>
-                    <a
-                      href="/students"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/pages/students")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <CircleUserRound className="h-6 w-6" />
-                      Students
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="/sections"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/sections")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <UsersRound className="h-6 w-6" />
-                      Sections
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="/subjects"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/subjects")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <BookCopy className="h-6 w-6" />
-                      Subjects
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="/grades"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/grades")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <ChartNoAxesColumn className="h-6 w-6" />
-                      Grades
-                    </a>
-                  </li>
+                    return (
+                      <li key={item.href}>
+                        <a
+                          href={item.href}
+                          className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
+                            isActive(item.href)
+                              ? "gs-sidebar-active"
+                              : "gs-secondary-text"
+                          }`}
+                        >
+                          <Icon className="h-6 w-6" />
+                          {item.label}
+                        </a>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
 
@@ -133,19 +95,25 @@ export default function Sidebar() {
                 <h1 className="gs-secondary-text mb-3 ml-4 text-xs">REPORTS</h1>
 
                 <ul>
-                  <li>
-                    <a
-                      href="/grade-reports"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/grade-reports")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <NotepadText className="h-6 w-6" />
-                      Grade Reports
-                    </a>
-                  </li>
+                  {reportItems.map((item) => {
+                    const Icon = item.icon
+
+                    return (
+                      <li key={item.href}>
+                        <a
+                          href={item.href}
+                          className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
+                            isActive(item.href)
+                              ? "gs-sidebar-active"
+                              : "gs-secondary-text"
+                          }`}
+                        >
+                          <Icon className="h-6 w-6" />
+                          {item.label}
+                        </a>
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             </div>
@@ -165,122 +133,69 @@ export default function Sidebar() {
         </div>
       ) : (
         <div className="gs-secondary-bg flex h-screen w-auto flex-col justify-between overflow-y-auto border-r border-[#545878] px-2 py-5">
-          {/* TOP */}
+          {/* COLLAPSED TOP */}
           <div>
-            {/* LOGO */}
             <div className="relative border-b-[0.5px] border-[#545878] pb-8">
               <div className="flex flex-col items-center justify-between gap-2">
                 <span
-                  className="flex justify-center rounded-lg bg-[#6366F1] px-2 py-1 cursor-pointer hover:bg-indigo-700 transition"
-                  onClick={() => setPanelOpen(!panelOpen)}
-                  title="open sidebar"
+                  className="flex cursor-pointer justify-center rounded-lg bg-[#6366F1] px-2 py-1 transition hover:bg-indigo-700"
+                  onClick={() => setPanelOpen(true)}
                 >
-                  <Layers
-                    className="h-5 w-5 text-white"
-                    strokeWidth={2}
-                  />
+                  <Layers className="h-5 w-5 text-white" strokeWidth={2} />
                 </span>
               </div>
             </div>
 
-            {/* NAV */}
+            {/* COLLAPSED NAV */}
             <div className="mt-10 space-y-10">
-              {/* MAIN */}
-              <div>
-                <h1 className="gs-secondary-text mb-2 ml-4 text-xs">M</h1>
+              <ul>
+                {navItems.map((item) => {
+                  const Icon = item.icon
 
-                <ul>
-                  <li>
-                    <a
-                      href="/dashboard"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/pages/dashboard")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <Box className="h-6 w-6" />
-                    </a>
-                  </li>
+                  return (
+                    <li key={item.href}>
+                      <a
+                        title={item.label}
+                        href={item.href}
+                        className={`gs-sidebar-hover-active mb-1 flex w-full justify-center px-3 py-2 ${
+                          isActive(item.href)
+                            ? "gs-sidebar-active"
+                            : "gs-secondary-text"
+                        }`}
+                      >
+                        <Icon className="h-6 w-6" />
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
 
-                  <li>
-                    <a
-                      href="/students"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/pages/students")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <CircleUserRound className="h-6 w-6" />
-                    </a>
-                  </li>
+              <ul>
+                {reportItems.map((item) => {
+                  const Icon = item.icon
 
-                  <li>
-                    <a
-                      href="/sections"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/sections")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <UsersRound className="h-6 w-6" />
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="/subjects"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/subjects")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <BookCopy className="h-6 w-6" />
-                    </a>
-                  </li>
-
-                  <li>
-                    <a
-                      href="/grades"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/grades")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <ChartNoAxesColumn className="h-6 w-6" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* REPORTS */}
-              <div>
-                <h1 className="gs-secondary-text mb-3 ml-4 text-xs">R</h1>
-
-                <ul>
-                  <li>
-                    <a
-                      href="/grade-reports"
-                      className={`gs-sidebar-hover-active mb-1 flex w-full items-center gap-2 px-3 py-2 text-lg ${
-                        isActive("/grade-reports")
-                          ? "gs-sidebar-active"
-                          : "gs-secondary-text"
-                      }`}
-                    >
-                      <NotepadText className="h-6 w-6" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
+                  return (
+                    <li key={item.href}>
+                      <a
+                        title={item.label}
+                        href={item.href}
+                        className={`gs-sidebar-hover-active mb-1 flex w-full justify-center px-3 py-2 ${
+                          isActive(item.href)
+                            ? "gs-sidebar-active"
+                            : "gs-secondary-text"
+                        }`}
+                      >
+                        <Icon className="h-6 w-6" />
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
             </div>
           </div>
 
-          {/* USER */}
-          <div className="flex items-center gap-4 border-t border-[#545878] pt-4">
+          {/* COLLAPSED USER */}
+          <div className="flex justify-center border-t border-[#545878] pt-4">
             <div className="rounded-full bg-[#6366F1] p-2 font-semibold text-white">
               AD
             </div>

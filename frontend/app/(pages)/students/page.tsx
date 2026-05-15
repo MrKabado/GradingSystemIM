@@ -9,6 +9,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import CustomDropdownMenu from "@/components/common/Dropdown"
 
 const students = [
   {
@@ -68,53 +69,21 @@ export default function StudentsPage() {
           className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none"
         />
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="gs-secondary-text flex w-80 items-center justify-center gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
-            <h1>Select Year Level</h1>
-            <ChevronDown />
-          </DropdownMenuTrigger>
+        <CustomDropdownMenu
+          selectName="Select Year Level"
+          option1="Grade 7"
+          option2="Grade 8"
+          option3="Grade 9"
+          option4="Grade 10"
+        />
 
-          <DropdownMenuContent>
-            <DropdownMenuGroup className="gs-secondary-text border-none bg-[#13162A] text-white">
-              <DropdownMenuItem className="rounded-none">
-                Grade 7
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-none">
-                Grade 8
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-none">
-                Grade 9
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-none">
-                Grade 10
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger className="gs-secondary-text flex w-80 items-center justify-center gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
-            <h1>Select Section</h1>
-            <ChevronDown />
-          </DropdownMenuTrigger>
-
-          <DropdownMenuContent>
-            <DropdownMenuGroup className="gs-secondary-text border-none bg-[#13162A] text-white">
-              <DropdownMenuItem className="rounded-none">
-                Section A
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-none">
-                Section B
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-none">
-                Section C
-              </DropdownMenuItem>
-              <DropdownMenuItem className="rounded-none">
-                Section D
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <CustomDropdownMenu
+          selectName="Select Section"
+          option1="Section A"
+          option2="Section B"
+          option3="Section C"
+          option4="Section D"
+        />
       </div>
 
       {/* TABLE */}
