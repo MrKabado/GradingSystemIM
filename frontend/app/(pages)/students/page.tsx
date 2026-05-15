@@ -1,7 +1,14 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { SquarePen, Trash2, X } from "lucide-react";
+import { useState } from "react"
+import { SquarePen, Trash2, X, ChevronDown } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"
 
 const students = [
   {
@@ -28,14 +35,13 @@ const students = [
     section: "C",
     status: "Active",
   },
-];
+]
 
 export default function StudentsPage() {
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false)
 
   return (
     <div className="gs-main-page">
-
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
@@ -55,26 +61,60 @@ export default function StudentsPage() {
       </div>
 
       {/* FILTERS */}
-      <div className="flex justify-evenly gap-4">
+      <div className="flex gap-4">
         <input
           type="text"
           placeholder="Search student..."
           className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none"
         />
 
-        <select className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none">
-          <option>Grade 7</option>
-          <option>Grade 8</option>
-          <option>Grade 9</option>
-          <option>Grade 10</option>
-        </select>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="gs-secondary-text flex w-80 items-center justify-center gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
+            <h1>Select Year Level</h1>
+            <ChevronDown />
+          </DropdownMenuTrigger>
 
-        <select className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none">
-          <option>Section A</option>
-          <option>Section B</option>
-          <option>Section C</option>
-          <option>Section D</option>
-        </select>
+          <DropdownMenuContent>
+            <DropdownMenuGroup className="gs-secondary-text border-none bg-[#13162A] text-white">
+              <DropdownMenuItem className="rounded-none">
+                Grade 7
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-none">
+                Grade 8
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-none">
+                Grade 9
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-none">
+                Grade 10
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger className="gs-secondary-text flex w-80 items-center justify-center gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
+            <h1>Select Section</h1>
+            <ChevronDown />
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent>
+            <DropdownMenuGroup className="gs-secondary-text border-none bg-[#13162A] text-white">
+              <DropdownMenuItem className="rounded-none">
+                Section A
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-none">
+                Section B
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-none">
+                Section C
+              </DropdownMenuItem>
+              <DropdownMenuItem className="rounded-none">
+                Section D
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* TABLE */}
@@ -98,8 +138,8 @@ export default function StudentsPage() {
         {/* TABLE */}
         <div className="overflow-x-auto border-[#545878]">
           <table className="min-w-full text-left text-sm">
-            <thead className="border-b border-t border-[#545878] bg-[#1C2035]">
-              <tr className="gs-secondary-text text-xs uppercase tracking-wider">
+            <thead className="border-t border-b border-[#545878] bg-[#1C2035]">
+              <tr className="gs-secondary-text text-xs tracking-wider uppercase">
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Student Name</th>
                 <th className="px-4 py-3">Student ID</th>
@@ -112,17 +152,11 @@ export default function StudentsPage() {
 
             <tbody className="divide-y divide-[#2E3350]">
               {students.map((student, index) => (
-                <tr
-                  key={student.id}
-                  className="transition hover:bg-[#22273D]"
-                >
+                <tr key={student.id} className="transition hover:bg-[#22273D]">
                   <td className="px-4 py-3 text-white">{index + 1}</td>
 
                   <td className="px-4 py-3 font-medium text-white">
-                    <a
-                      href="#"
-                      className="transition hover:text-[#8B84FF]"
-                    >
+                    <a href="#" className="transition hover:text-[#8B84FF]">
                       {student.fullName}
                     </a>
                   </td>
@@ -137,7 +171,7 @@ export default function StudentsPage() {
 
                   <td className="px-4 py-3">
                     <span className="w-fit rounded-lg border-[0.5px] border-[#31326E] bg-[#23264A] px-2 py-1 text-[#8B84FF]">
-                      {student.section}
+                      Section {student.section}
                     </span>
                   </td>
 
@@ -145,9 +179,7 @@ export default function StudentsPage() {
                     <div className="flex items-center gap-1">
                       <span className="flex w-fit items-center rounded-full border-2 border-[#152B30] bg-green-400 px-1 py-1 text-xs"></span>
 
-                      <p className="gs-secondary-text">
-                        {student.status}
-                      </p>
+                      <p className="gs-secondary-text">{student.status}</p>
                     </div>
                   </td>
 
@@ -179,7 +211,6 @@ export default function StudentsPage() {
           aria-modal="true"
         >
           <div className="gs-card max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-[#545878] bg-[#13162A] shadow-xl">
-            
             {/* HEADER */}
             <div className="flex items-start justify-between gap-4 border-b border-[#545878] px-5 py-4">
               <div>
@@ -283,5 +314,5 @@ export default function StudentsPage() {
         </div>
       )}
     </div>
-  );
+  )
 }
