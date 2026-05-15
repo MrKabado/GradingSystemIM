@@ -35,10 +35,6 @@ export default function SubjectsPage() {
 
   return (
     <div className="gs-main-page">
-      {/* STATUS */}
-      <div className="rounded-lg border border-[#31326E] bg-[#1E1F44] px-4 py-3 text-sm text-[#8B84FF]">
-        Subject added successfully
-      </div>
 
       {/* HEADER */}
       <div className="flex items-center justify-between">
