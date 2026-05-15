@@ -3,46 +3,50 @@
 import { useState } from "react";
 import { SquarePen, Trash2, X } from "lucide-react";
 
-const students = [
+const sections = [
   {
     id: 1,
-    studentId: "2024-001",
-    fullName: "Lebron James",
-    gradeLevel: "Grade 10",
+    yearLevel: "7",
     section: "A",
-    status: "Active",
+    students: 32,
   },
   {
     id: 2,
-    studentId: "2024-002",
-    fullName: "John Casagan",
-    gradeLevel: "Grade 9",
+    yearLevel: "8",
     section: "B",
-    status: "Active",
+    students: 28,
   },
   {
     id: 3,
-    studentId: "2024-003",
-    fullName: "Stephen Curry",
-    gradeLevel: "Grade 8",
+    yearLevel: "9",
     section: "C",
-    status: "Active",
+    students: 35,
+  },
+  {
+    id: 4,
+    yearLevel: "10",
+    section: "D",
+    students: 30,
   },
 ];
 
-export default function StudentsPage() {
+export default function SectionsPage() {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (
     <div className="gs-main-page">
+      {/* STATUS */}
+      <div className="rounded-lg border border-[#31326E] bg-[#1E1F44] px-4 py-3 text-sm text-[#8B84FF]">
+        Section added successfully
+      </div>
 
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold text-white">Students</h1>
+          <h1 className="text-2xl font-semibold text-white">Sections</h1>
 
           <p className="gs-secondary-text text-sm">
-            Manage and monitor all enrolled students
+            Manage grade levels and class sections
           </p>
         </div>
 
@@ -50,7 +54,7 @@ export default function StudentsPage() {
           onClick={() => setModalOpen(true)}
           className="inline-flex cursor-pointer items-center rounded-lg bg-indigo-500 px-6 py-2 text-sm text-white hover:bg-indigo-600"
         >
-          Add Student
+          Add Section
         </button>
       </div>
 
@@ -58,7 +62,7 @@ export default function StudentsPage() {
       <div className="flex justify-evenly gap-4">
         <input
           type="text"
-          placeholder="Search student..."
+          placeholder="Search section..."
           className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none"
         />
 
@@ -82,16 +86,16 @@ export default function StudentsPage() {
         <div className="flex items-center justify-between px-4">
           <div>
             <h1 className="text-xl font-semibold text-gray-300">
-              Student List
+              Section List
             </h1>
 
             <p className="gs-secondary-text mt-1 text-xs">
-              Manage and monitor all students
+              All sections in the system
             </p>
           </div>
 
           <div className="rounded-lg bg-[#1E1F44] px-3 py-1 text-[#8B84FF]">
-            <h1 className="text-xs">{students.length} Students</h1>
+            <h1 className="text-xs">{sections.length} Sections</h1>
           </div>
         </div>
 
@@ -101,54 +105,33 @@ export default function StudentsPage() {
             <thead className="border-b border-t border-[#545878] bg-[#1C2035]">
               <tr className="gs-secondary-text text-xs uppercase tracking-wider">
                 <th className="px-4 py-3">#</th>
-                <th className="px-4 py-3">Student Name</th>
-                <th className="px-4 py-3">Student ID</th>
-                <th className="px-4 py-3">Grade Level</th>
+                <th className="px-4 py-3">Grade level</th>
                 <th className="px-4 py-3">Section</th>
-                <th className="px-4 py-3">Status</th>
+                <th className="px-4 py-3">Students</th>
                 <th className="px-4 py-3 text-center">Actions</th>
               </tr>
             </thead>
 
             <tbody className="divide-y divide-[#2E3350]">
-              {students.map((student, index) => (
+              {sections.map((section, index) => (
                 <tr
-                  key={student.id}
+                  key={section.id}
                   className="transition hover:bg-[#22273D]"
                 >
                   <td className="px-4 py-3 text-white">{index + 1}</td>
 
-                  <td className="px-4 py-3 font-medium text-white">
-                    <a
-                      href="#"
-                      className="transition hover:text-[#8B84FF]"
-                    >
-                      {student.fullName}
-                    </a>
-                  </td>
-
                   <td className="gs-secondary-text px-4 py-3">
-                    {student.studentId}
-                  </td>
-
-                  <td className="gs-secondary-text px-4 py-3">
-                    {student.gradeLevel}
+                    Grade {section.yearLevel}
                   </td>
 
                   <td className="px-4 py-3">
                     <span className="w-fit rounded-lg border-[0.5px] border-[#31326E] bg-[#23264A] px-2 py-1 text-[#8B84FF]">
-                      {student.section}
+                      {section.section}
                     </span>
                   </td>
 
-                  <td className="gap-1 px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <span className="flex w-fit items-center rounded-full border-2 border-[#152B30] bg-green-400 px-1 py-1 text-xs"></span>
-
-                      <p className="gs-secondary-text">
-                        {student.status}
-                      </p>
-                    </div>
+                  <td className="gs-secondary-text px-4 py-3">
+                    {section.students}
                   </td>
 
                   <td className="space-x-2 px-4 py-3 text-center">
@@ -184,11 +167,11 @@ export default function StudentsPage() {
             <div className="flex items-start justify-between gap-4 border-b border-[#545878] px-5 py-4">
               <div>
                 <h2 className="text-lg font-semibold text-white">
-                  Add student
+                  Add section
                 </h2>
 
                 <p className="gs-secondary-text mt-1 text-xs">
-                  Fill in the details to enroll a new student.
+                  Fill in the details to add a new section.
                 </p>
               </div>
 
@@ -204,61 +187,26 @@ export default function StudentsPage() {
             <form className="space-y-4 px-5 py-4">
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-400">
-                  Student ID
+                  Grade level
                 </label>
 
                 <input
                   type="text"
-                  className="w-full rounded-lg border border-[#545878] bg-[#0D0F1A] px-3 py-2 text-sm text-white outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-gray-400">
-                    First name
-                  </label>
-
-                  <input
-                    type="text"
-                    className="w-full rounded-lg border border-[#545878] bg-[#0D0F1A] px-3 py-2 text-sm text-white outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-xs font-medium text-gray-400">
-                    Middle name
-                  </label>
-
-                  <input
-                    type="text"
-                    className="w-full rounded-lg border border-[#545878] bg-[#0D0F1A] px-3 py-2 text-sm text-white outline-none"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="mb-1 block text-xs font-medium text-gray-400">
-                  Last name
-                </label>
-
-                <input
-                  type="text"
-                  className="w-full rounded-lg border border-[#545878] bg-[#0D0F1A] px-3 py-2 text-sm text-white outline-none"
+                  placeholder="e.g. 7"
+                  className="w-full rounded-lg border border-[#545878] bg-[#0D0F1A] px-3 py-2 text-sm text-white placeholder-[#545878] outline-none"
                 />
               </div>
 
               <div>
                 <label className="mb-1 block text-xs font-medium text-gray-400">
-                  Section
+                  Section name
                 </label>
 
-                <select className="w-full rounded-lg border border-[#545878] bg-[#0D0F1A] px-3 py-2 text-sm text-white outline-none">
-                  <option>Section A</option>
-                  <option>Section B</option>
-                  <option>Section C</option>
-                  <option>Section D</option>
-                </select>
+                <input
+                  type="text"
+                  placeholder="e.g. A"
+                  className="w-full rounded-lg border border-[#545878] bg-[#0D0F1A] px-3 py-2 text-sm text-white placeholder-[#545878] outline-none"
+                />
               </div>
 
               {/* BUTTONS */}
@@ -275,7 +223,7 @@ export default function StudentsPage() {
                   type="submit"
                   className="rounded-lg bg-[#6366F1] px-4 py-2 text-sm font-semibold text-white hover:bg-[#5558e8]"
                 >
-                  Create student
+                  Create section
                 </button>
               </div>
             </form>
