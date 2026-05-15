@@ -44,7 +44,7 @@ export default function Sidebar() {
                 />
               </div>
 
-              <p className="gs-secondary-text absolute top-10 left-16 text-sm">
+              <p className="gs-secondary-text absolute top-10 left-25 text-sm">
                 Admin portal
               </p>
             </div>
@@ -170,13 +170,16 @@ export default function Sidebar() {
             {/* LOGO */}
             <div className="relative border-b-[0.5px] border-[#545878] pb-8">
               <div className="flex flex-col items-center justify-between gap-2">
-                <span className="flex justify-center rounded-lg bg-[#6366F1] px-2 py-1">
-                  <Layers className="h-5 w-5 text-white" strokeWidth={2} />
-                </span>
-                <PanelRightClose
-                  className="gs-secondary-text cursor-pointer"
+                <span
+                  className="flex justify-center rounded-lg bg-[#6366F1] px-2 py-1 cursor-pointer hover:bg-indigo-700 transition"
                   onClick={() => setPanelOpen(!panelOpen)}
-                />
+                  title="open sidebar"
+                >
+                  <Layers
+                    className="h-5 w-5 text-white"
+                    strokeWidth={2}
+                  />
+                </span>
               </div>
             </div>
 
