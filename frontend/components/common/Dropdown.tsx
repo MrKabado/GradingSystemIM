@@ -18,7 +18,7 @@ type PropsType = {
 export default function CustomDropdownMenu({ selectName, option1, option2, option3, option4 }: PropsType) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="gs-secondary-text flex w-80 items-center justify-center gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
+      <DropdownMenuTrigger className="gs-secondary-text flex w-85 items-center justify-center gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
         <h1>{selectName}</h1>
         <ChevronDown />
       </DropdownMenuTrigger>

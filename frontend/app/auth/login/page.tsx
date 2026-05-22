@@ -14,7 +14,6 @@ export default function LoginPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      console.log(process.env.NEXT_PUBLIC_BACKEND_API);
       const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/login`, { email, password });
       
       if (!res) {
@@ -24,11 +23,16 @@ export default function LoginPage() {
 
       toast.success(res.data.message);
       setTimeout(() => {
-        router.push('/pages/dashboard')
+        router.push('/dashboard')
       }, 2000);
         
     } catch (err) {
-      toast.error("An error occurred while logging in.");
+      console.error("Login error:", err);
+      if (axios.isAxiosError(err)) {
+        toast.error(err.response?.data?.message || "An error occurred while logging in.");
+      } else {
+        toast.error("An error occurred while logging in.");
+      }
     }
   };
 

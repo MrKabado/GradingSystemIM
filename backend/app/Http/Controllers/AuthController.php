@@ -12,7 +12,14 @@ class AuthController extends Controller
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required', 'string', 'min:6'],
-        ]);
+        ],
+        [
+            'password.min' => 'Password must be at least 6 characters.',
+            'password.required' => 'Password is required.',
+            'email.required' => 'Email is required.',
+            'email.email' => 'Please enter a valid email address.',
+        ]
+    );
 
         if (! Auth::attempt($credentials)) {
             return response()->json([

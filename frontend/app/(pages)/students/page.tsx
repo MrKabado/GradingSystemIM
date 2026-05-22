@@ -122,7 +122,7 @@ export default function StudentsPage() {
             <tbody className="divide-y divide-[#2E3350]">
               {students.map((student, index) => (
                 <tr key={student.id} className="transition hover:bg-[#22273D]">
-                  <td className="px-4 py-3 text-white">{index + 1}</td>
+                  <td className="px-4 py-3 gs-secondary-text">{index + 1}</td>
 
                   <td className="px-4 py-3 font-medium text-white">
                     <a href="#" className="transition hover:text-[#8B84FF]">

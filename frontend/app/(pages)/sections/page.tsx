@@ -120,7 +120,7 @@ export default function SectionsPage() {
             <tbody className="divide-y divide-[#2E3350]">
               {sections.map((section, index) => (
                 <tr key={section.id} className="transition hover:bg-[#22273D]">
-                  <td className="px-4 py-3 text-white">{index + 1}</td>
+                  <td className="px-4 py-3 gs-secondary-text">{index + 1}</td>
 
                   <td className="gs-secondary-text px-4 py-3">
                     Grade {section.yearLevel}
@@ -128,7 +128,7 @@ export default function SectionsPage() {
 
                   <td className="px-4 py-3">
                     <span className="w-fit rounded-lg border-[0.5px] border-[#31326E] bg-[#23264A] px-2 py-1 text-[#8B84FF]">
-                      {section.section}
+                      Section {section.section}
                     </span>
                   </td>
 

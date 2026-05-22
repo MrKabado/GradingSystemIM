@@ -61,7 +61,7 @@ class StudentController extends Controller
 
         ActivityLog::record(
             'created',
-            'students',
+            'students', 
             $student->id,
             'Created student: ' . $student->full_name
         );

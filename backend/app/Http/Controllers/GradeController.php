@@ -77,6 +77,66 @@ class GradeController extends Controller
         ], 201);
     }
 
+    public function show(Student $student): JsonResponse
+    {
+        $student->load('section');
+    
+        if (!$student->section_id) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Student has no section assigned.',
+                'data' => [
+                    'student' => $student,
+                    'grades' => []
+                ]
+            ], 400);
+        }
+    
+        $subjects = Subject::where('section_id', $student->section_id)
+            ->with('teacher')
+            ->orderBy('name')
+            ->get();
+    
+        $grades = Grade::where('student_id', $student->id)
+            ->get()
+            ->groupBy('subject_id');
+    
+        $formattedGrades = [];
+    
+        foreach ($subjects as $subject) {
+            $subjectGrades = $grades->get($subject->id, collect());
+    
+            $quarters = [];
+    
+            foreach (Grade::QUARTERS as $quarter) {
+                $record = $subjectGrades->firstWhere('quarter', $quarter);
+                $quarters[$quarter] = $record ? (float) $record->grade : null;
+            }
+    
+            $values = array_filter($quarters);
+    
+            $average = count($values)
+                ? round(array_sum($values) / count($values), 2)
+                : null;
+    
+            $formattedGrades[] = [
+                'subject_id' => $subject->id,
+                'subject_name' => $subject->name,
+                'teacher' => $subject->teacher?->name,
+                'quarters' => $quarters,
+                'average' => $average,
+            ];
+        }
+    
+        return response()->json([
+            'status' => 'success',
+            'data' => [
+                'student' => $student,
+                'grades' => $formattedGrades,
+            ]
+        ]);
+    }
+
     public function update(Request $request, Student $student): JsonResponse
     {
         $validated = $request->validate([
@@ -212,7 +272,7 @@ class GradeController extends Controller
         foreach ($students as $student) {
             $studentGrades = $grades->get($student->id, collect());
 
-            $quarterScores = ['Q1'=>[], 'Q2'=>[], 'Q3'=>[], 'Q4'=>[]];
+            $quarterScores = ['Q1' => [], 'Q2' => [], 'Q3' => [], 'Q4' => []];
             $subjectAverages = [];
 
             foreach ($subjects as $subject) {
@@ -223,8 +283,8 @@ class GradeController extends Controller
                 foreach (Grade::QUARTERS as $q) {
                     $record = $subGrades->firstWhere('quarter', $q);
                     if ($record?->grade !== null) {
-                        $quarterScores[$q][] = (float)$record->grade;
-                        $values[] = (float)$record->grade;
+                        $quarterScores[$q][] = (float) $record->grade;
+                        $values[] = (float) $record->grade;
                     }
                 }
 
