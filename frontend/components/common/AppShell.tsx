@@ -12,9 +12,11 @@ export default function AppShell({ children }: { children: ReactNode }) {
     <DataProvider>
       <div className="flex h-screen overflow-hidden">
         <Sidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
-        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <div className="gs-primary-bg flex min-w-0 flex-1 flex-col overflow-hidden">
           <Header />
-          <main className="min-h-0 flex-1 overflow-y-auto">{children}</main>
+          <main className="gs-primary-bg min-h-0 flex-1 overflow-y-auto">
+            {children}
+          </main>
         </div>
       </div>
     </DataProvider>

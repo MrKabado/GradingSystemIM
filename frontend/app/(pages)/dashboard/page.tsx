@@ -12,8 +12,6 @@ import {
 export default function DashboardPage() {
   const { dashboard } = useData()
 
-  console.log(dashboard)
-
   return (
     <div className="gs-main-page">
       {/* GREETINGS HOLDER */}
@@ -92,18 +90,27 @@ export default function DashboardPage() {
       </div>
 
       {/* RECENT ACTIVITY */}
-      <div>
-        <h1 className="text-gray-300">Recent Activity</h1>
+      <div className="gs-card rounded-lg p-4">
+        <h2 className="mb-4 text-lg font-semibold text-gray-300">
+          Recent Activity
+        </h2>
 
-        <div className="overflow-y-auto">
-        {dashboard?.recentActivities.map((activity) => (
-          <div key={activity.id} className="border-b border-[#545878] pb-2">
-            <p className="text-sm gs-primary-text">{activity.description}</p>
-            <p className="text-xs text-gray-500">
-              {activity.event} • {activity.module}
-            </p>
-          </div>
-        ))}
+        <div className="max-h-72 space-y-3 overflow-y-auto pr-1">
+          {dashboard?.recentActivities?.length ? (
+            dashboard.recentActivities.map((activity) => (
+              <div
+                key={activity.id}
+                className="border-b border-[#545878] pb-3 last:border-b-0 last:pb-0"
+              >
+                <p className="gs-primary-text text-sm">{activity.description}</p>
+                <p className="text-xs text-gray-500">
+                  {activity.event} • {activity.module}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="gs-secondary-text text-sm">No recent activity yet.</p>
+          )}
         </div>
       </div>
     </div>

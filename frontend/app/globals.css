@@ -119,11 +119,15 @@
 @layer base {
   html {
     @apply font-sans;
-    }
+  }
+
+  body {
+    @apply bg-[#0D0F1A] text-gray-300 antialiased;
+  }
 }
 
 .gs-main-page {
-  @apply bg-[#0D0F1A] h-full p-6 space-y-8 w-full
+  @apply bg-[#0D0F1A] min-h-full w-full space-y-8 p-6;
 }
 
 .gs-primary-bg {
