@@ -1,24 +1,9 @@
-import { ReactNode } from "react"
-import Sidebar from "@/components/common/Sidebar"
-import Header from "@/components/common/Header"
-import { DataProvider } from "@/context/DataContext"
+import AppShell from "@/components/common/AppShell"
 
 export default function PageLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <>
-      <DataProvider>
-        <div className="flex h-screen">
-          <Sidebar />
-          <div className="flex w-full flex-col">
-            <Header />
-            {children}
-          </div>
-        </div>
-      </DataProvider>
-    </>
-  )
+  return <AppShell>{children}</AppShell>
 }

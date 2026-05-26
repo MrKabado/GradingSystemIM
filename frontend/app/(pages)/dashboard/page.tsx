@@ -10,10 +10,9 @@ import {
 } from "lucide-react"
 
 export default function DashboardPage() {
-  const {dashboard} = useData();
+  const { dashboard } = useData()
 
-  console.log(dashboard);
-
+  console.log(dashboard)
 
   return (
     <div className="gs-main-page">
@@ -41,12 +40,14 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex w-fit flex-col gap-1">
-            <h1 className="text-3xl font-semibold text-gray-300">248</h1>
+            <h1 className="text-3xl font-semibold text-gray-300">
+              {dashboard?.totalStudents}
+            </h1>
 
             <p className="gs-secondary-text">Total Students</p>
 
             <p className="gs-success-bg gs-success-text rounded-md px-1 text-xs">
-              +12 this month
+              + {dashboard?.newStudentsThisMonth}
             </p>
           </div>
         </div>
@@ -58,12 +59,14 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex w-fit flex-col gap-1">
-            <h1 className="text-3xl font-semibold text-gray-300">4</h1>
+            <h1 className="text-3xl font-semibold text-gray-300">
+              {dashboard?.totalGradeLevels}
+            </h1>
 
             <p className="gs-secondary-text">Grade Levels</p>
 
             <p className="gs-success-bg gs-success-text rounded-md px-1 text-xs">
-              Grades 7 - 10
+              {dashboard?.gradeLevelsRange}
             </p>
           </div>
         </div>
@@ -75,12 +78,14 @@ export default function DashboardPage() {
           </div>
 
           <div className="flex w-fit flex-col gap-1">
-            <h1 className="text-3xl font-semibold text-gray-300">4</h1>
+            <h1 className="text-3xl font-semibold text-gray-300">
+              {dashboard?.totalSections}
+            </h1>
 
             <p className="gs-secondary-text">Sections</p>
 
             <p className="gs-success-bg gs-success-text rounded-md px-1 text-xs">
-              A, B, C, D
+              {dashboard?.sectionNamesList}
             </p>
           </div>
         </div>
@@ -90,14 +95,15 @@ export default function DashboardPage() {
       <div>
         <h1 className="text-gray-300">Recent Activity</h1>
 
-        <div className="gs-card gs-secondary-text mt-4 flex flex-col gap-2 rounded-lg p-4 text-sm">
-          <h1 className="border-b-[0.5px] border-[#545878] pb-2">
-            Lebron James grade record updated
-          </h1>
-
-          <h1 className="border-b-[0.5px] border-[#545878] pb-2">
-            New student added: John Casagan
-          </h1>
+        <div className="overflow-y-auto">
+        {dashboard?.recentActivities.map((activity) => (
+          <div key={activity.id} className="border-b border-[#545878] pb-2">
+            <p className="text-sm gs-primary-text">{activity.description}</p>
+            <p className="text-xs text-gray-500">
+              {activity.event} • {activity.module}
+            </p>
+          </div>
+        ))}
         </div>
       </div>
     </div>
