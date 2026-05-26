@@ -6,7 +6,10 @@ const baseURL = process.env.NODE_ENV === "production" ? prodbase : localbase
 
 const api = axios.create({
   baseURL,
-  withCredentials: true,
+  headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+  },
 })
 
 api.interceptors.request.use((config) => {
@@ -18,5 +21,19 @@ api.interceptors.request.use((config) => {
 
   return config
 })
+
+api.interceptors.response.use(
+  (response) => response,
+  (error: AxiosError) => {
+    if (error.response?.status === 401 && typeof window !== "undefined") {
+      localStorage.removeItem("token")
+      if (!window.location.pathname.startsWith("/auth/login")) {
+        window.location.href = "/auth/login"
+      }
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 export default api

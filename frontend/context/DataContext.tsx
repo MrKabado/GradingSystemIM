@@ -5,7 +5,9 @@ import {
   useContext,
   useState,
   ReactNode,
+  useEffect
 } from "react";
+
 
 import api from "@/lib/api";
 
@@ -516,6 +518,14 @@ export const DataProvider = ({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchDashboard();
+    fetchStudents();
+    fetchSections();
+    fetchSubjects();
+    fetchGrades();
+  }, []);
 
   return (
     <DataContext.Provider

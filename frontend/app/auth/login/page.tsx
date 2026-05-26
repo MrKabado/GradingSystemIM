@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import axios from "axios";
+import api from "@/lib/api";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -14,17 +15,17 @@ export default function LoginPage() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/login`, { email, password });
-      
-      if (!res) {
-        toast.error("Error something went wrong");
+      const res = await api.post("/api/auth/login", { email, password });
+
+      if (!res.data?.token) {
+        toast.error("Login succeeded but no token was returned.");
         return;
       }
 
+      localStorage.setItem("token", res.data.token);
+
       toast.success(res.data.message);
-      setTimeout(() => {
-        router.push('/dashboard')
-      }, 2000);
+      router.push("/dashboard");
         
     } catch (err) {
       console.error("Login error:", err);
