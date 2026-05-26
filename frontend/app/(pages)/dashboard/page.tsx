@@ -25,7 +25,7 @@ import {
         </div>
   
         {/* CARDS */}
-        <div className="flex justify-evenly gap-4">
+        <div className="grid grid-cols-3 gap-4">
           {/* TOTAL STUDENTS */}
           <div className="gs-card w-full rounded-lg p-4">
             <div className="mb-2 w-fit rounded-md bg-[#20224A] p-2">
@@ -39,23 +39,6 @@ import {
   
               <p className="gs-success-bg gs-success-text rounded-md px-1 text-xs">
                 +12 this month
-              </p>
-            </div>
-          </div>
-  
-          {/* ACTIVE RATE */}
-          <div className="gs-card w-full rounded-lg p-4">
-            <div className="gs-success-bg mb-2 w-fit rounded-md p-2">
-              <Activity className="gs-success-text h-6 w-6" />
-            </div>
-  
-            <div className="flex w-fit flex-col gap-1">
-              <h1 className="text-3xl font-semibold text-gray-300">94%</h1>
-  
-              <p className="gs-secondary-text">Active Rate</p>
-  
-              <p className="gs-success-bg gs-success-text rounded-md px-1 text-xs">
-                +2% vs last term
               </p>
             </div>
           </div>

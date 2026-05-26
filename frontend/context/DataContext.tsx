@@ -3,7 +3,6 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useState,
   ReactNode,
 } from "react";
@@ -17,8 +16,10 @@ import api from "@/lib/api";
 export interface Filters {
   yearLevels: string[];
   sectionNames: string[];
+
   selectedYearLevel: string | null;
   selectedSection: string | null;
+
   search: string | null;
 }
 
@@ -34,15 +35,20 @@ export interface PaginatedResponse<T> {
   data: T[];
 
   first_page_url: string;
+
   from: number;
+
   last_page: number;
   last_page_url: string;
 
   links: PaginationLink[];
 
   next_page_url: string | null;
+
   path: string;
+
   per_page: number;
+
   prev_page_url: string | null;
 
   to: number;
@@ -55,11 +61,15 @@ export interface PaginatedResponse<T> {
 
 export interface Section {
   id: number;
+
   year_level: string;
   section: string;
+
   class_adviser: string;
+
   created_at: string;
   updated_at: string;
+
   deleted_at: string | null;
 
   students_count?: number;
@@ -67,13 +77,18 @@ export interface Section {
 
 export interface Student {
   id: number;
+
   student_id: string;
+
   first_name: string;
   middle_name: string;
   last_name: string;
+
   section_id: number | null;
+
   created_at: string;
   updated_at: string;
+
   deleted_at: string | null;
 
   section?: Section | null;
@@ -81,19 +96,26 @@ export interface Student {
 
 export interface Teacher {
   id: number;
+
   name: string;
+
   created_at: string;
   updated_at: string;
+
   deleted_at: string | null;
 }
 
 export interface Subject {
   id: number;
+
   name: string;
+
   section_id: number | null;
   teacher_id: number | null;
+
   created_at: string;
   updated_at: string;
+
   deleted_at: string | null;
 
   section?: Section | null;
@@ -102,7 +124,9 @@ export interface Subject {
 
 export interface GradeRows {
   student_id: number;
+
   student_no: string;
+
   name: string;
 
   grades: {
@@ -113,16 +137,23 @@ export interface GradeRows {
   };
 
   average: number | null;
+
   remarks: string | null;
 }
 
 export interface StudentReportItem {
   id: number;
+
   student_id: string;
+
   name: string;
+
   section: string;
+
   average: string;
+
   status: string;
+
   date_generated: string;
 }
 
@@ -131,18 +162,51 @@ export interface CardItem {
   value: number;
 }
 
+export interface ActivityLog {
+  id: number;
+
+  user_id: number;
+
+  event: string;
+  module: string;
+
+  record_id: number;
+
+  description: string;
+
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DashboardData {
+  totalStudents: number;
+
+  newStudentsThisMonth: number;
+
+  totalGradeLevels: number;
+  gradeLevelsRange: string;
+
+  totalSections: number;
+  sectionNamesList: string;
+
+  recentActivities: ActivityLog[];
+}
+
 /* =========================
    API RESPONSES
 ========================= */
 
 export interface StudentsResponse {
   filters: Filters;
+
   students: PaginatedResponse<Student>;
+
   sections: Section[];
 }
 
 export interface SectionsResponse {
   filters: Filters;
+
   sections: PaginatedResponse<Section>;
 }
 
@@ -151,13 +215,16 @@ export interface SubjectsResponse {
 
   data: {
     yearLevels: string[];
+
     sectionNames: string[];
 
     selectedYearLevel: string | null;
     selectedSection: string | null;
+
     search: string | null;
 
     subjects: PaginatedResponse<Subject>;
+
     sections: Section[];
   };
 }
@@ -169,6 +236,7 @@ export interface GradesResponse {
     sections: Section[];
 
     yearLevels: string[];
+
     sectionNames: string[];
 
     selectedYearLevel: string | null;
@@ -177,6 +245,7 @@ export interface GradesResponse {
     activeSection: Section | null;
 
     subjects: Subject[];
+
     students: Student[];
 
     gradeRows: GradeRows[];
@@ -199,24 +268,42 @@ export interface StudentReportsResponse {
   };
 }
 
+export interface DashboardResponse {
+  status: string;
+
+  data: DashboardData;
+}
+
 /* =========================
    CONTEXT TYPE
 ========================= */
 
 interface DataContextType {
   students: Student[];
+
   sections: Section[];
+
   subjects: Subject[];
+
   gradeRows: GradeRows[];
+
   studentReports: StudentReportItem[];
+
+  dashboard: DashboardData | null;
 
   loading: boolean;
 
   fetchStudents: () => Promise<void>;
+
   fetchSections: () => Promise<void>;
+
   fetchSubjects: () => Promise<void>;
+
   fetchGrades: () => Promise<void>;
+
   fetchStudentReports: () => Promise<void>;
+
+  fetchDashboard: () => Promise<void>;
 }
 
 /* =========================
@@ -235,16 +322,29 @@ interface Props {
   children: ReactNode;
 }
 
-export const DataProvider = ({ children }: Props) => {
-  const [students, setStudents] = useState<Student[]>([]);
-  const [sections, setSections] = useState<Section[]>([]);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
-  const [gradeRows, setGradeRows] = useState<GradeRows[]>([]);
-  const [studentReports, setStudentReports] = useState<
-    StudentReportItem[]
-  >([]);
+export const DataProvider = ({
+  children,
+}: Props) => {
+  const [students, setStudents] =
+    useState<Student[]>([]);
 
-  const [loading, setLoading] = useState(false);
+  const [sections, setSections] =
+    useState<Section[]>([]);
+
+  const [subjects, setSubjects] =
+    useState<Subject[]>([]);
+
+  const [gradeRows, setGradeRows] =
+    useState<GradeRows[]>([]);
+
+  const [studentReports, setStudentReports] =
+    useState<StudentReportItem[]>([]);
+
+  const [dashboard, setDashboard] =
+    useState<DashboardData | null>(null);
+
+  const [loading, setLoading] =
+    useState(false);
 
   /* =========================
      FETCH STUDENTS
@@ -255,12 +355,21 @@ export const DataProvider = ({ children }: Props) => {
       setLoading(true);
 
       const response =
-        await api.get<StudentsResponse>("/api/students");
+        await api.get<StudentsResponse>(
+          "/api/students"
+        );
 
-      setStudents(response.data.students.data);
-      setSections(response.data.sections);
+      setStudents(
+        response.data.students.data
+      );
+
+      setSections(
+        response.data.sections
+      );
+
     } catch (error) {
       console.log(error);
+
     } finally {
       setLoading(false);
     }
@@ -275,11 +384,17 @@ export const DataProvider = ({ children }: Props) => {
       setLoading(true);
 
       const response =
-        await api.get<SectionsResponse>("/api/sections");
+        await api.get<SectionsResponse>(
+          "/api/sections"
+        );
 
-      setSections(response.data.sections.data);
+      setSections(
+        response.data.sections.data
+      );
+
     } catch (error) {
       console.log(error);
+
     } finally {
       setLoading(false);
     }
@@ -294,12 +409,21 @@ export const DataProvider = ({ children }: Props) => {
       setLoading(true);
 
       const response =
-        await api.get<SubjectsResponse>("/api/subjects");
+        await api.get<SubjectsResponse>(
+          "/api/subjects"
+        );
 
-      setSubjects(response.data.data.subjects.data);
-      setSections(response.data.data.sections);
+      setSubjects(
+        response.data.data.subjects.data
+      );
+
+      setSections(
+        response.data.data.sections
+      );
+
     } catch (error) {
       console.log(error);
+
     } finally {
       setLoading(false);
     }
@@ -314,14 +438,29 @@ export const DataProvider = ({ children }: Props) => {
       setLoading(true);
 
       const response =
-        await api.get<GradesResponse>("/api/grades");
+        await api.get<GradesResponse>(
+          "/api/grades"
+        );
 
-      setSections(response.data.data.sections);
-      setSubjects(response.data.data.subjects);
-      setStudents(response.data.data.students);
-      setGradeRows(response.data.data.gradeRows);
+      setSections(
+        response.data.data.sections
+      );
+
+      setSubjects(
+        response.data.data.subjects
+      );
+
+      setStudents(
+        response.data.data.students
+      );
+
+      setGradeRows(
+        response.data.data.gradeRows
+      );
+
     } catch (error) {
       console.log(error);
+
     } finally {
       setLoading(false);
     }
@@ -331,30 +470,52 @@ export const DataProvider = ({ children }: Props) => {
      FETCH STUDENT REPORTS
   ========================= */
 
-  const fetchStudentReports = async () => {
+  const fetchStudentReports =
+    async () => {
+      try {
+        setLoading(true);
+
+        const response =
+          await api.get<StudentReportsResponse>(
+            "/api/student-reports"
+          );
+
+        setStudentReports(
+          response.data.data.items
+        );
+
+      } catch (error) {
+        console.log(error);
+
+      } finally {
+        setLoading(false);
+      }
+    };
+
+  /* =========================
+     FETCH DASHBOARD
+  ========================= */
+
+  const fetchDashboard = async () => {
     try {
       setLoading(true);
 
       const response =
-        await api.get<StudentReportsResponse>(
-          "/api/student-reports"
+        await api.get<DashboardResponse>(
+          "/api/dashboard"
         );
 
-      setStudentReports(response.data.data.items);
+      setDashboard(
+        response.data.data
+      );
+
     } catch (error) {
       console.log(error);
+
     } finally {
       setLoading(false);
     }
   };
-
-  /* =========================
-     AUTO LOAD
-  ========================= */
-
-  useEffect(() => {
-    fetchStudents();
-  }, []);
 
   return (
     <DataContext.Provider
@@ -365,6 +526,8 @@ export const DataProvider = ({ children }: Props) => {
         gradeRows,
         studentReports,
 
+        dashboard,
+
         loading,
 
         fetchStudents,
@@ -372,6 +535,8 @@ export const DataProvider = ({ children }: Props) => {
         fetchSubjects,
         fetchGrades,
         fetchStudentReports,
+
+        fetchDashboard,
       }}
     >
       {children}
@@ -384,7 +549,8 @@ export const DataProvider = ({ children }: Props) => {
 ========================= */
 
 export const useData = () => {
-  const context = useContext(DataContext);
+  const context =
+    useContext(DataContext);
 
   if (!context) {
     throw new Error(
