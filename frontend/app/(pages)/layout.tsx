@@ -1,6 +1,7 @@
 import { ReactNode } from "react"
 import Sidebar from "@/components/common/Sidebar"
 import Header from "@/components/common/Header"
+import { DataProvider } from "@/context/DataContext"
 
 export default function PageLayout({
   children,
@@ -9,13 +10,15 @@ export default function PageLayout({
 }) {
   return (
     <>
-      <div className="flex h-screen">
-        <Sidebar />
-        <div className="flex flex-col w-full">
-          <Header />
-          {children}
+      <DataProvider>
+        <div className="flex h-screen">
+          <Sidebar />
+          <div className="flex w-full flex-col">
+            <Header />
+            {children}
+          </div>
         </div>
-      </div>
+      </DataProvider>
     </>
   )
 }
