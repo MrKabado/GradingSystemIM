@@ -464,9 +464,8 @@ export const DataProvider = ({
         mergeSections(prev, response.data.data.sections)
       );
 
-      setSubjects(
-        response.data.data.subjects
-      );
+      // Do not overwrite the shared subjects state with grade-specific subjects.
+      // The grades endpoint can return a different shape than the subjects index.
 
       // Preserve existing `section` relation when grades API doesn't include it.
       setStudents((prev) =>
