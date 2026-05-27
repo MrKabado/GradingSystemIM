@@ -452,8 +452,14 @@ export const DataProvider = ({
         response.data.data.subjects
       );
 
-      setStudents(
-        response.data.data.students
+      // Preserve existing `section` relation when grades API doesn't include it.
+      setStudents((prev) =>
+        response.data.data.students.map((s) => ({
+          ...s,
+          section:
+            // keep incoming section if present, else fallback to existing student's section
+            s.section ?? prev.find((p) => p.id === s.id)?.section ?? null,
+        }))
       );
 
       setGradeRows(

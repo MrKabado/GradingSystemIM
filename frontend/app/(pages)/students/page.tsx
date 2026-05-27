@@ -6,8 +6,11 @@ import SectionDropdown from "@/components/common/SectionDropdown"
 import { useData } from "@/context/DataContext"
 import api from "@/lib/api"
 import { toast } from "sonner"
+import GradeLevelDropdown from "@/components/common/GradeLevelDropdown"
 
 export default function StudentsPage() {
+  const { sections, students } = useData()
+
   const [student_id, setStudentId] = useState("")
   const [first_name, setFirstName] = useState("")
   const [middle_name, setMiddleName] = useState("")
@@ -17,13 +20,16 @@ export default function StudentsPage() {
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(
     null
   )
+  const [selectedSection, setSelectedSection] = useState("");
+  const [selectedGradeLevel, setSelectedGradeLevel] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false)
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null)
   const [form, setForm] = useState("add")
 
-  const { sections, students } = useData()
+
+
 
   const openAddModal = () => {
     setForm("add")
@@ -116,6 +122,18 @@ export default function StudentsPage() {
     }
   }
 
+  const filtered = students.filter((student) => {
+    const matchesGrade = selectedGradeLevel
+      ? student.section?.year_level === selectedGradeLevel
+      : true;
+
+    const matchesSection = selectedSection
+      ? student.section_id === Number(selectedSection)
+      : true;
+
+    return matchesGrade && matchesSection;
+  })
+
   return (
     <div className="gs-main-page">
       {/* HEADER */}
@@ -144,10 +162,14 @@ export default function StudentsPage() {
           className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none"
         />
 
-        <SectionDropdown
+        <GradeLevelDropdown
+          selectedGradeLevel={selectedGradeLevel}
+          onChangeGradeLevel={setSelectedGradeLevel}
         />
 
         <SectionDropdown
+          selectedSection={selectedSection}
+          onChangeSection={setSelectedSection}
         />
       </div>
 
@@ -172,7 +194,7 @@ export default function StudentsPage() {
             </div>
 
             <div className="rounded-lg bg-[#1E1F44] px-3 py-1 text-[#8B84FF]">
-              <h1 className="text-xs">{students.length} Students</h1>
+              <h1 className="text-xs">{filtered.length} Students</h1>
             </div>
           </div>
 
@@ -191,7 +213,7 @@ export default function StudentsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#2E3350]">
-                {students.map((student: any, index: number) => (
+                {filtered.map((student: any, index: number) => (
                   <tr
                     key={student.id}
                     className="transition hover:bg-[#22273D]"
@@ -354,7 +376,7 @@ export default function StudentsPage() {
 
                   {sections.map((section: any) => (
                     <option key={section.id} value={section.id}>
-                      {section.section}
+                      Grade {section.year_level + " - " + section.section}
                     </option>
                   ))}
                 </select>

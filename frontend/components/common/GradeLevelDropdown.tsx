@@ -1,4 +1,4 @@
-import { ChevronDown } from "lucide-react"
+﻿import { ChevronDown } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -9,21 +9,21 @@ import {
 import { useData } from "@/context/DataContext"
 
 type Props = {
-  selectedSection?: string;
-  onChangeSection?: (value: string) => void;
-};
+  selectedGradeLevel: string;
+  onChangeGradeLevel: (value: string) => void;
+}
 
-export default function SectionDropdown({
-  selectedSection = "",
-  onChangeSection = () => {},
+export default function GradeLevelDropdown({
+  selectedGradeLevel,
+  onChangeGradeLevel,
 }: Props) {
-  const { sections } = useData();
+  const { sections } = useData()
 
-  const selected = sections.find(
-    (section) => section.id.toString() === selectedSection
-  );
+  const yearLevels = Array.from(
+    new Set(sections.map((section) => section.year_level))
+  )
 
-  const label = selected?.section || "Select Section";
+  const label = selectedGradeLevel || "Select Grade Level"
 
   return (
     <DropdownMenu>
@@ -36,28 +36,28 @@ export default function SectionDropdown({
         <DropdownMenuGroup>
           <DropdownMenuItem
             className={`rounded-none cursor-pointer ${
-              !selectedSection ? "text-[#8B84FF] font-medium" : ""
+              !selectedGradeLevel ? "text-[#8B84FF] font-medium" : ""
             }`}
-            onClick={() => onChangeSection("")}
+            onClick={() => onChangeGradeLevel("")}
           >
-            All Sections
+            All Grade Levels
           </DropdownMenuItem>
 
-          {sections.map((section) => (
+          {yearLevels.map((yearLevel) => (
             <DropdownMenuItem
-              key={section.id}
+              key={yearLevel}
               className={`rounded-none cursor-pointer ${
-                selectedSection === section.id.toString()
+                selectedGradeLevel === yearLevel
                   ? "text-[#8B84FF] font-medium"
                   : ""
               }`}
-              onClick={() => onChangeSection(section.id.toString())}
+              onClick={() => onChangeGradeLevel(yearLevel)}
             >
-              {section.section}
+              {yearLevel}
             </DropdownMenuItem>
           ))}
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }
