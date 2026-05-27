@@ -348,6 +348,22 @@ export const DataProvider = ({
   const [loading, setLoading] =
     useState(false);
 
+  // Merge incoming sections with existing ones, preserving `students_count`
+  const mergeSections = (
+    prev: Section[],
+    incoming: Section[]
+  ): Section[] => {
+    const prevCounts = new Map<number, number | undefined>(
+      prev.map((s) => [s.id, s.students_count])
+    );
+
+    return incoming.map((s) => ({
+      ...s,
+      students_count:
+        s.students_count ?? prevCounts.get(s.id) ?? s.students_count ?? undefined,
+    }));
+  };
+
   /* =========================
      FETCH STUDENTS
   ========================= */
@@ -365,8 +381,8 @@ export const DataProvider = ({
         response.data.students.data
       );
 
-      setSections(
-        response.data.sections
+      setSections((prev) =>
+        mergeSections(prev, response.data.sections)
       );
 
     } catch (error) {
@@ -390,8 +406,8 @@ export const DataProvider = ({
           "/api/sections"
         );
 
-      setSections(
-        response.data.sections.data
+      setSections((prev) =>
+        mergeSections(prev, response.data.sections.data)
       );
 
     } catch (error) {
@@ -419,8 +435,8 @@ export const DataProvider = ({
         response.data.data.subjects.data
       );
 
-      setSections(
-        response.data.data.sections
+      setSections((prev) =>
+        mergeSections(prev, response.data.data.sections)
       );
 
     } catch (error) {
@@ -444,8 +460,8 @@ export const DataProvider = ({
           "/api/grades"
         );
 
-      setSections(
-        response.data.data.sections
+      setSections((prev) =>
+        mergeSections(prev, response.data.data.sections)
       );
 
       setSubjects(
@@ -549,10 +565,10 @@ export const DataProvider = ({
         fetchStudents,
         fetchSections,
         fetchSubjects,
-        fetchGrades,
+        
         fetchStudentReports,
-
         fetchDashboard,
+        fetchGrades,
       }}
     >
       {children}
