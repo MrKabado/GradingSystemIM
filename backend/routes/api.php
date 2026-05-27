@@ -43,4 +43,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/grade-reports/{student}/pdf', [StudentReportController::class, 'pdfDownload']);
 
     Route::post('/grade-reports/{student}/approve', [StudentReportController::class, 'approve']);
+    Route::delete('/grade-reports/{student}', [StudentReportController::class, 'destroy']);
 });
