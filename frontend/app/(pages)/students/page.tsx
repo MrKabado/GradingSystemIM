@@ -20,6 +20,9 @@ export default function StudentsPage() {
   const [selectedStudentId, setSelectedStudentId] = useState<number | null>(
     null
   )
+
+  //Filters
+  const [searchStudent, setSearchStudent] = useState("");
   const [selectedSection, setSelectedSection] = useState("");
   const [selectedGradeLevel, setSelectedGradeLevel] = useState("");
 
@@ -27,8 +30,6 @@ export default function StudentsPage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false)
   const [selectedDeleteId, setSelectedDeleteId] = useState<number | null>(null)
   const [form, setForm] = useState("add")
-
-
 
 
   const openAddModal = () => {
@@ -123,6 +124,12 @@ export default function StudentsPage() {
   }
 
   const filtered = students.filter((student) => {
+    const matchesSearch = 
+    student.first_name.toLowerCase().includes(searchStudent.toLowerCase()) ||
+    student.middle_name.toLowerCase().includes(searchStudent.toLowerCase()) ||
+    student.last_name.toLowerCase().includes(searchStudent.toLowerCase()) ||
+    student.student_id.toLowerCase().includes(searchStudent.toLowerCase())
+
     const matchesGrade = selectedGradeLevel
       ? student.section?.year_level === selectedGradeLevel
       : true;
@@ -131,7 +138,7 @@ export default function StudentsPage() {
       ? student.section_id === Number(selectedSection)
       : true;
 
-    return matchesGrade && matchesSection;
+    return matchesSearch && matchesGrade && matchesSection;
   })
 
   return (
@@ -158,8 +165,10 @@ export default function StudentsPage() {
       <div className="flex gap-4">
         <input
           type="text"
-          placeholder="Search student..."
+          placeholder="Search students by name or student ID..."
           className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none"
+          value={searchStudent}
+          onChange={(e) => setSearchStudent(e.target.value)}
         />
 
         <GradeLevelDropdown
