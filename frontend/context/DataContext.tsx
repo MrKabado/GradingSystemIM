@@ -256,6 +256,12 @@ export interface GradesResponse {
   };
 }
 
+type GradeFetchParams = {
+  year_level?: string;
+  section?: string;
+  search?: string;
+};
+
 export interface StudentReportsResponse {
   status: string;
 
@@ -287,7 +293,13 @@ interface DataContextType {
 
   subjects: Subject[];
 
+  gradeSubjects: Subject[];
+
   gradeRows: GradeRows[];
+
+  gradeQuarters: string[];
+
+  gradeActiveSection: Section | null;
 
   studentReports: StudentReportItem[];
 
@@ -301,7 +313,7 @@ interface DataContextType {
 
   fetchSubjects: () => Promise<void>;
 
-  fetchGrades: () => Promise<void>;
+  fetchGrades: (params?: GradeFetchParams) => Promise<void>;
 
   fetchStudentReports: () => Promise<void>;
 
@@ -336,8 +348,17 @@ export const DataProvider = ({
   const [subjects, setSubjects] =
     useState<Subject[]>([]);
 
+  const [gradeSubjects, setGradeSubjects] =
+    useState<Subject[]>([]);
+
   const [gradeRows, setGradeRows] =
     useState<GradeRows[]>([]);
+
+  const [gradeQuarters, setGradeQuarters] =
+    useState<string[]>([]);
+
+  const [gradeActiveSection, setGradeActiveSection] =
+    useState<Section | null>(null);
 
   const [studentReports, setStudentReports] =
     useState<StudentReportItem[]>([]);
@@ -451,21 +472,35 @@ export const DataProvider = ({
      FETCH GRADES
   ========================= */
 
-  const fetchGrades = async () => {
+  const fetchGrades = async (
+    params: GradeFetchParams = {}
+  ) => {
     try {
       setLoading(true);
 
       const response =
         await api.get<GradesResponse>(
-          "/api/grades"
+          "/api/grades",
+          {
+            params,
+          }
         );
 
       setSections((prev) =>
         mergeSections(prev, response.data.data.sections)
       );
 
-      // Do not overwrite the shared subjects state with grade-specific subjects.
-      // The grades endpoint can return a different shape than the subjects index.
+      setGradeSubjects(
+        response.data.data.subjects
+      );
+
+      setGradeQuarters(
+        response.data.data.quarters
+      );
+
+      setGradeActiveSection(
+        response.data.data.activeSection
+      );
 
       // Preserve existing `section` relation when grades API doesn't include it.
       setStudents((prev) =>
@@ -554,7 +589,10 @@ export const DataProvider = ({
         students,
         sections,
         subjects,
+        gradeSubjects,
         gradeRows,
+        gradeQuarters,
+        gradeActiveSection,
         studentReports,
 
         dashboard,
@@ -564,10 +602,9 @@ export const DataProvider = ({
         fetchStudents,
         fetchSections,
         fetchSubjects,
-        
+        fetchGrades,
         fetchStudentReports,
         fetchDashboard,
-        fetchGrades,
       }}
     >
       {children}
