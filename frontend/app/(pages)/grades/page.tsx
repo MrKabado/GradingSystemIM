@@ -8,7 +8,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
-import CustomDropdownMenu from "@/components/common/Dropdown"
+import SectionDropdown from "@/components/common/SectionDropdown"
 
 const cards = [
   {
@@ -86,20 +86,10 @@ export default function GradesPage() {
 
       {/* FILTERS */}
       <div className="flex justify-evenly gap-4">
-      <CustomDropdownMenu
-          selectName="Select Year Level"
-          option1="Grade 7"
-          option2="Grade 8"
-          option3="Grade 9"
-          option4="Grade 10"
+      <SectionDropdown
         />
 
-        <CustomDropdownMenu
-          selectName="Select Section"
-          option1="Section A"
-          option2="Section B"
-          option3="Section C"
-          option4="Section D"
+        <SectionDropdown
         />
 
         <input

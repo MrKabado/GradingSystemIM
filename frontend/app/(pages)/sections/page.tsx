@@ -9,7 +9,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
-import CustomDropdownMenu from "@/components/common/Dropdown"
+import SectionDropdown from "@/components/common/SectionDropdown"
 
 const sections = [
   {
@@ -69,20 +69,10 @@ export default function SectionsPage() {
           className="w-full rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 text-white outline-none"
         />
 
-        <CustomDropdownMenu
-          selectName="Select Year Level"
-          option1="Grade 7"
-          option2="Grade 8"
-          option3="Grade 9"
-          option4="Grade 10"
+        <SectionDropdown
         />
 
-        <CustomDropdownMenu
-          selectName="Select Section"
-          option1="Section A"
-          option2="Section B"
-          option3="Section C"
-          option4="Section D"
+        <SectionDropdown
         />
       </div>
 
