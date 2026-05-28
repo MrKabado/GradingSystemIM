@@ -221,7 +221,7 @@ export default function GradesPage() {
       </div>
 
       {/* CARDS */}
-      <div className="mt-4 grid grid-cols-2 gap-4 xl:grid-cols-4">
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className="gs-card rounded-lg px-4 py-4">
           <h1 className="gs-secondary-text text-md">Total Students</h1>
           <p className="gs-primary-text text-2xl font-semibold">{totalStudents}</p>

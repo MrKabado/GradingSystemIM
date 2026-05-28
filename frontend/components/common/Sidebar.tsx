@@ -47,8 +47,10 @@ export default function Sidebar({ open, onOpenChange }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "gs-secondary-bg flex h-full shrink-0 flex-col justify-between overflow-y-auto border-r border-[#545878] transition-[width] duration-200 ease-in-out",
-        open ? "w-80 p-5" : "w-18 px-2 py-5"
+        "gs-secondary-bg flex h-full shrink-0 flex-col justify-between overflow-y-auto border-r border-[#545878] transition-[width,transform] duration-200 ease-in-out",
+        open
+          ? "fixed inset-y-0 left-0 z-50 w-80 translate-x-0 p-5 shadow-xl md:static md:w-80 md:translate-x-0"
+          : "fixed inset-y-0 left-0 z-50 w-0 -translate-x-full overflow-hidden md:static md:w-18 md:px-2 md:py-5 md:translate-x-0"
       )}
     >
       <div>

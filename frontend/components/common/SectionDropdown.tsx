@@ -27,7 +27,7 @@ export default function SectionDropdown({
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="gs-secondary-text flex w-85 items-center justify-center gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
+      <DropdownMenuTrigger className="gs-secondary-text flex w-full sm:w-[21.25rem] items-center justify-between gap-1 rounded-lg border border-[#545878] bg-[#13162A] px-4 py-2 outline-none">
         <h1 className="truncate">{label}</h1>
         <ChevronDown />
       </DropdownMenuTrigger>

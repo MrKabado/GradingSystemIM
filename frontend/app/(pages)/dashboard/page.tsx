@@ -30,7 +30,7 @@ export default function DashboardPage() {
       </div>
 
       {/* CARDS */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* TOTAL STUDENTS */}
         <div className="gs-card w-full rounded-lg p-4">
           <div className="mb-2 w-fit rounded-md bg-[#20224A] p-2">

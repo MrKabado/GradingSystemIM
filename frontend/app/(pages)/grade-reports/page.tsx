@@ -191,11 +191,11 @@ export default function GradeReportsPage() {
   return (
     <div className="gs-main-page space-y-6">
       <div>
-        <h1 className="gs-page-title gs-primary-text text-2xl font-bold">
+        <h1 className="gs-primary-text text-2xl font-semibold">
           Grade Reports
         </h1>
 
-        <p className="gs-page-subtitle text-gray-400">
+        <p className="gs-secondary-text text-sm">
           View, approve, and download student grade reports.
         </p>
       </div>
@@ -207,7 +207,7 @@ export default function GradeReportsPage() {
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder="Search by student name or ID..."
-            className="bg-[#0D0F1A] border border-[#545878] rounded-lg px-3 py-2 text-sm text-white w-full md:w-[300px]"
+            className="bg-[#0D0F1A] border border-[#545878] rounded-lg px-3 py-2 text-sm text-white w-full md:w-75"
           />
 
           <select
@@ -278,7 +278,7 @@ export default function GradeReportsPage() {
 
       <div className="gs-card rounded-lg border border-[#545878] bg-[#151729]">
         <div className="overflow-x-auto">
-          <table className="min-w-[800px] w-full text-sm text-left">
+          <table className="min-w-200 w-full text-sm text-left">
             <thead className="bg-[#1C2035] border-b border-t border-[#545878]">
               <tr className="text-gray-400 text-xs uppercase tracking-wider">
                 <th className="px-4 py-3">#</th>
@@ -452,7 +452,7 @@ export default function GradeReportsPage() {
                   </div>
 
                   <div className="border border-[#545878]/30 rounded-xl overflow-hidden bg-[#0D0F1A] overflow-x-auto">
-                    <table className="min-w-[480px] w-full text-xs text-left">
+                    <table className="min-w-120 w-full text-xs text-left">
                       <thead className="bg-[#1C2035] border-b border-[#545878]/30">
                         <tr className="text-gray-400 uppercase tracking-wider font-semibold">
                           <th className="px-4 py-3">Subject</th>
