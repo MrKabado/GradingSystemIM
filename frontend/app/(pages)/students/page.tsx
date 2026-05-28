@@ -144,7 +144,7 @@ export default function StudentsPage() {
   return (
     <div className="gs-main-page">
       {/* HEADER */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h1 className="text-2xl font-semibold text-white">Students</h1>
 
@@ -162,7 +162,7 @@ export default function StudentsPage() {
       </div>
 
       {/* FILTERS */}
-      <div className="flex gap-4">
+      <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
         <input
           type="text"
           placeholder="Search students by name or student ID..."
@@ -179,7 +179,7 @@ export default function StudentsPage() {
         <SectionDropdown
           selectedSection={selectedSection}
           onChangeSection={setSelectedSection}
-        />
+          />
       </div>
 
       {students.length === 0 ? (
@@ -191,7 +191,7 @@ export default function StudentsPage() {
         </div>
       ) : (
         <div className="gs-card space-y-4 rounded-lg py-4">
-          <div className="flex items-center justify-between px-4">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between px-4">
             <div>
               <h1 className="text-xl font-semibold text-gray-300">
                 Student List
