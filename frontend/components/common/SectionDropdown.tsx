@@ -11,13 +11,19 @@ import { useData } from "@/context/DataContext"
 type Props = {
   selectedSection?: string;
   onChangeSection?: (value: string) => void;
+  yearLevel?: string;
 };
 
 export default function SectionDropdown({
   selectedSection = "",
   onChangeSection = () => {},
+  yearLevel = "",
 }: Props) {
   const { sections } = useData();
+
+  const availableSections = yearLevel
+    ? sections.filter((section) => section.year_level === yearLevel)
+    : sections;
 
   const selected = sections.find(
     (section) => section.id.toString() === selectedSection
@@ -43,7 +49,7 @@ export default function SectionDropdown({
             All Sections
           </DropdownMenuItem>
 
-          {sections.map((section) => (
+          {availableSections.map((section) => (
             <DropdownMenuItem
               key={section.id}
               className={`rounded-none cursor-pointer ${
