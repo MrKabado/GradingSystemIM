@@ -218,39 +218,63 @@ class GradeController extends Controller
         $yearLevels = $sections->pluck('year_level')->unique()->values();
         $sectionNames = $sections->pluck('section')->unique()->values();
 
-        $selectedYearLevel = $request->input('year_level', $yearLevels->first());
-        $selectedSectionName = $request->input('section', $sectionNames->first());
+        $selectedYearLevel = $request->input('year_level');
+        $selectedSectionName = $request->input('section');
         $search = $request->input('search');
 
-        $activeSection = Section::where('year_level', $selectedYearLevel)
-            ->where('section', $selectedSectionName)
-            ->first();
+        $activeSection = null;
+        $studentsQuery = Student::query();
+        $subjectsQuery = Subject::query();
 
-        if (!$activeSection) {
-            return [
-                'sections' => $sections,
-                'yearLevels' => $yearLevels,
-                'sectionNames' => $sectionNames,
-                'selectedYearLevel' => $selectedYearLevel,
-                'selectedSection' => $selectedSectionName,
-                'students' => [],
-                'subjects' => [],
-                'gradeRows' => [],
-                'stats' => [
-                    'total' => 0,
-                    'passed' => 0,
-                    'failed' => 0,
-                    'average' => null,
-                ],
-            ];
+        if ($selectedYearLevel) {
+            $sectionIds = Section::where('year_level', $selectedYearLevel)->pluck('id');
+            $studentsQuery->whereIn('section_id', $sectionIds);
+            $subjectsQuery->whereIn('section_id', $sectionIds);
         }
 
-        $subjects = Subject::where('section_id', $activeSection->id)
-            ->with('teacher')
+        if ($selectedSectionName) {
+            $activeSectionQuery = Section::where('section', $selectedSectionName);
+            if ($selectedYearLevel) {
+                $activeSectionQuery->where('year_level', $selectedYearLevel);
+            }
+
+            $activeSection = $activeSectionQuery->first();
+            if ($activeSection) {
+                $studentsQuery->where('section_id', $activeSection->id);
+                $subjectsQuery->where('section_id', $activeSection->id);
+            } else {
+                return [
+                    'sections' => $sections,
+                    'yearLevels' => $yearLevels,
+                    'sectionNames' => $sectionNames,
+                    'selectedYearLevel' => $selectedYearLevel,
+                    'selectedSection' => $selectedSectionName,
+                    'students' => [],
+                    'subjects' => [],
+                    'gradeRows' => [],
+                    'stats' => [
+                        'total' => 0,
+                        'passed' => 0,
+                        'failed' => 0,
+                        'average' => null,
+                    ],
+                ];
+            }
+        }
+
+        if ($search) {
+            $studentsQuery->where(function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%")
+                    ->orWhere('student_id', 'like', "%{$search}%");
+            });
+        }
+
+        $students = $studentsQuery->orderBy('last_name')->get();
+
+        $subjects = $subjectsQuery->with('teacher')
             ->orderBy('name')
             ->get();
-
-        $studentsQuery = Student::where('section_id', $activeSection->id);
 
         if ($search) {
             $studentsQuery->where(function ($q) use ($search) {

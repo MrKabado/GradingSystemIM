@@ -203,12 +203,16 @@ export default function GradesPage() {
       <div className="mt-4 flex flex-col gap-4 lg:flex-row lg:items-center">
         <GradeLevelDropdown
           selectedGradeLevel={selectedGradeLevel}
-          onChangeGradeLevel={setSelectedGradeLevel}
+          onChangeGradeLevel={(value) => {
+            setSelectedGradeLevel(value)
+            setSelectedSection("")
+          }}
         />
 
         <SectionDropdown
           selectedSection={selectedSection}
           onChangeSection={setSelectedSection}
+          yearLevel={selectedGradeLevel}
         />
 
         <input

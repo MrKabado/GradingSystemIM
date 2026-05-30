@@ -5,7 +5,9 @@ import {
   useContext,
   useState,
   ReactNode,
-  useEffect
+  useEffect,
+  useCallback,
+  useMemo,
 } from "react";
 
 
@@ -370,243 +372,216 @@ export const DataProvider = ({
     useState(false);
 
   // Merge incoming sections with existing ones, preserving `students_count`
-  const mergeSections = (
-    prev: Section[],
-    incoming: Section[]
-  ): Section[] => {
-    const prevCounts = new Map<number, number | undefined>(
-      prev.map((s) => [s.id, s.students_count])
-    );
+  // and avoiding duplicate section entries.
+  const mergeSections = useCallback(
+    (prev: Section[], incoming: Section[]): Section[] => {
+      const prevCounts = new Map<number, number | undefined>(
+        prev.map((s) => [s.id, s.students_count])
+      );
 
-    return incoming.map((s) => ({
-      ...s,
-      students_count:
-        s.students_count ?? prevCounts.get(s.id) ?? s.students_count ?? undefined,
-    }));
-  };
+      const merged = new Map<number, Section>();
 
+      incoming.forEach((s) => {
+        const students_count =
+          s.students_count ?? prevCounts.get(s.id) ?? undefined;
+
+        merged.set(s.id, {
+          ...s,
+          students_count,
+        });
+      });
+
+      return Array.from(merged.values());
+    },
+    []
+  );
   /* =========================
      FETCH STUDENTS
   ========================= */
 
-  const fetchStudents = async () => {
+  const fetchStudents = useCallback(async () => {
     try {
       setLoading(true);
 
-      const response =
-        await api.get<StudentsResponse>(
-          "/api/students"
-        );
-
-      setStudents(
-        response.data.students.data
+      const response = await api.get<StudentsResponse>(
+        "/api/students"
       );
 
-      setSections((prev) =>
-        mergeSections(prev, response.data.sections)
-      );
-
+      setStudents(response.data.students.data);
+      setSections((prev) => mergeSections(prev, response.data.sections));
     } catch (error) {
       console.log(error);
-
     } finally {
       setLoading(false);
     }
-  };
+  }, [mergeSections]);
 
   /* =========================
      FETCH SECTIONS
   ========================= */
 
-  const fetchSections = async () => {
+  const fetchSections = useCallback(async () => {
     try {
       setLoading(true);
 
-      const response =
-        await api.get<SectionsResponse>(
-          "/api/sections"
-        );
+      const response = await api.get<SectionsResponse>(
+        "/api/sections"
+      );
 
       setSections((prev) =>
         mergeSections(prev, response.data.sections.data)
       );
-
     } catch (error) {
       console.log(error);
-
     } finally {
       setLoading(false);
     }
-  };
+  }, [mergeSections]);
 
   /* =========================
      FETCH SUBJECTS
   ========================= */
 
-  const fetchSubjects = async () => {
+  const fetchSubjects = useCallback(async () => {
     try {
       setLoading(true);
 
-      const response =
-        await api.get<SubjectsResponse>(
-          "/api/subjects"
-        );
-
-      setSubjects(
-        response.data.data.subjects.data
+      const response = await api.get<SubjectsResponse>(
+        "/api/subjects"
       );
 
+      setSubjects(response.data.data.subjects.data);
       setSections((prev) =>
         mergeSections(prev, response.data.data.sections)
       );
-
     } catch (error) {
       console.log(error);
-
     } finally {
       setLoading(false);
     }
-  };
+  }, [mergeSections]);
 
   /* =========================
      FETCH GRADES
   ========================= */
 
-  const fetchGrades = async (
-    params: GradeFetchParams = {}
-  ) => {
-    try {
-      setLoading(true);
+  const fetchGrades = useCallback(
+    async (params: GradeFetchParams = {}) => {
+      try {
+        setLoading(true);
 
-      const response =
-        await api.get<GradesResponse>(
+        const response = await api.get<GradesResponse>(
           "/api/grades",
           {
             params,
           }
         );
 
-      setSections((prev) =>
-        mergeSections(prev, response.data.data.sections)
-      );
+        setSections((prev) =>
+          mergeSections(prev, response.data.data.sections)
+        );
 
-      setGradeSubjects(
-        response.data.data.subjects
-      );
-
-      setGradeQuarters(
-        response.data.data.quarters
-      );
-
-      setGradeActiveSection(
-        response.data.data.activeSection
-      );
-
-      // Preserve existing `section` relation when grades API doesn't include it.
-      setStudents((prev) =>
-        response.data.data.students.map((s) => ({
-          ...s,
-          section:
-            // keep incoming section if present, else fallback to existing student's section
-            s.section ?? prev.find((p) => p.id === s.id)?.section ?? null,
-        }))
-      );
-
-      setGradeRows(
-        response.data.data.gradeRows
-      );
-
-    } catch (error) {
-      console.log(error);
-
-    } finally {
-      setLoading(false);
-    }
-  };
+        setGradeSubjects(response.data.data.subjects);
+        setGradeQuarters(response.data.data.quarters);
+        setGradeActiveSection(response.data.data.activeSection);
+        setGradeRows(response.data.data.gradeRows);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [mergeSections]
+  );
 
   /* =========================
      FETCH STUDENT REPORTS
   ========================= */
 
-  const fetchStudentReports =
-    async () => {
-      try {
-        setLoading(true);
+  const fetchStudentReports = useCallback(async () => {
+    try {
+      setLoading(true);
 
-        const response =
-          await api.get<StudentReportsResponse>(
-            "/api/student-reports"
-          );
+      const response = await api.get<StudentReportsResponse>(
+        "/api/student-reports"
+      );
 
-        setStudentReports(
-          response.data.data.items
-        );
-
-      } catch (error) {
-        console.log(error);
-
-      } finally {
-        setLoading(false);
-      }
-    };
+      setStudentReports(response.data.data.items);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   /* =========================
      FETCH DASHBOARD
   ========================= */
 
-  const fetchDashboard = async () => {
+  const fetchDashboard = useCallback(async () => {
     try {
       setLoading(true);
 
-      const response =
-        await api.get<DashboardResponse>(
-          "/api/dashboard"
-        );
-
-      setDashboard(
-        response.data.data
+      const response = await api.get<DashboardResponse>(
+        "/api/dashboard"
       );
 
+      setDashboard(response.data.data);
     } catch (error) {
       console.log(error);
-
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchDashboard();
     fetchStudents();
     fetchSections();
     fetchSubjects();
-    fetchGrades();
   }, []);
 
+  const contextValue = useMemo(
+    () => ({
+      students,
+      sections,
+      subjects,
+      gradeSubjects,
+      gradeRows,
+      gradeQuarters,
+      gradeActiveSection,
+      studentReports,
+      dashboard,
+      loading,
+      fetchStudents,
+      fetchSections,
+      fetchSubjects,
+      fetchGrades,
+      fetchStudentReports,
+      fetchDashboard,
+    }),
+    [
+      students,
+      sections,
+      subjects,
+      gradeSubjects,
+      gradeRows,
+      gradeQuarters,
+      gradeActiveSection,
+      studentReports,
+      dashboard,
+      loading,
+      fetchStudents,
+      fetchSections,
+      fetchSubjects,
+      fetchGrades,
+      fetchStudentReports,
+      fetchDashboard,
+    ]
+  );
+
   return (
-    <DataContext.Provider
-      value={{
-        students,
-        sections,
-        subjects,
-        gradeSubjects,
-        gradeRows,
-        gradeQuarters,
-        gradeActiveSection,
-        studentReports,
-
-        dashboard,
-
-        loading,
-
-        fetchStudents,
-        fetchSections,
-        fetchSubjects,
-        fetchGrades,
-        fetchStudentReports,
-        fetchDashboard,
-      }}
-    >
+    <DataContext.Provider value={contextValue}>
       {children}
     </DataContext.Provider>
   );
